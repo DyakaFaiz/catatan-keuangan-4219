@@ -7,82 +7,85 @@
 #include <conio.h>
 using namespace std;
 
+// Kamus
+fstream file, file2, file3, file4;
 
-//Kamus
-//penamaan variabel
-    fstream file,file2,file3;
+class manajemen {
+public:
+    // Data
+    int withdraw;
+    int deposito;
+    int jipuk;
+    string catat;
 
-    class manajemen{
-    public:
-        //data
-        int withdraw;
-        int deposito;
-        int jmlUang;
-        int jipuk;
-        string catat;
+    // Method
+    void depo();
+    void with();
+    void displayJml();
+    void outputCatatan();
+};
 
-        //method
-        void depo();
-        void with();
-        void displayJml();
-        void outputCatatan();
-    };
-    manajemen manage;
+manajemen manage;
 
-    //Fungsi tambah uang
-    void manajemen::depo(){
-        cout << "Masukkan jumlah uang masuk : "; cin >> deposito;
-        cin.ignore();
-        cout << "Catatan : ";getline(cin,catat);
-        cout << endl;
-        cout << endl;
+// Fungsi tambah uang
+void manajemen::depo() {
+    cout << "Masukkan jumlah uang masuk: ";
+    cin >> deposito;
+    cin.ignore();
+    cout << "Catatan: ";
+    getline(cin, catat);
+    cout << endl;
+    cout << endl;
+}
+
+// Fungsi cek sisa uang
+
+
+// Fungsi mengambil uang
+void manajemen::with() {
+    cout << "Masukkan Jumlah Ambil: ";
+    cin >> manage.withdraw;
+    cin.ignore();
+    cout << "Catatan: ";
+    getline(cin, manage.catat);
+    cout << endl;
+    cout << endl;
+}
+
+void manajemen::displayJml() {
+    int total = 0;
+    int total3 = 0;
+    int hasil = 0;
+    string line, line3;
+    file.open("duitIn.txt"); // membuka file
+    while (getline(file, line)) {
+        int line2 = stoi(line); // merubah string ke integer
+        total = total + line2;
     }
 
-    //Fungsi cek sisa uang
-
-
-    //Fungsi mengambil uang
-    void manajemen::with(){
-        cout << "Masukkan Jumlah Ambil : ";cin >> manage.withdraw;
-        cin.ignore();
-        cout << "Catatan : ";getline(cin,manage.catat);
-        cout << endl;
-        cout << endl;
-    }
-
-    void manajemen::displayJml(){
-        int total,total3;
-        int hasil = 0;
-        string line,line3;
-
-        file.open("duitIn.txt"); //membuka file
-        while (getline(file, line)) {
-            int line2 = stoi(line); //merubah string ke integer
-            total = total + line2;
-         }
-        file3.open("duitOut.txt");
-        while(getline(file3,line3)){
-            int line4 = stoi(line3);
-            if(line4 > 0)
+    file3.open("duitOut.txt");
+    while (getline(file3, line3)) {
+        int line4 = stoi(line3);
+        if (line4 > 0) {
             total3 = total3 + line4;
         }
-        hasil = total - total3;
-        file3.close();
-        file.close();
-         cout << total;
     }
+    hasil = total - total3;
+    file3.close();
+    file.close();
+    cout << hasil;
+}
 
-    void addRecord();
-    void withdraw();
-    void showAll();
-    void table();
-//Deskripsi
-int main(){
-int jmlUang;
+void addRecord();
+void withdraw();
+void showAll();
+void table();
 
+// Deskripsi
+int main() {
     int option;
 
-     while(1){
+    while (1) {
         system("cls");
         cout << " === Catatan Keuangan=== \n";
         cout << "1. Deposito \n";
@@ -93,21 +96,21 @@ int jmlUang;
         cout << "Masukkan nomor opsi[1-4]: ";
         cin >> option;
 
-        switch(option){
-            case 1:{
+        switch (option) {
+            case 1: {
                 manage.depo();
                 addRecord();
                 cout << "Tekan sembarang untuk kembali ke menu";
                 getch();
                 break;
             }
-            case 2:{
+            case 2: {
                 withdraw();
                 cout << "Tekan sembarang untuk kembali ke menu";
                 getch();
                 break;
             }
-            case 3:{
+            case 3: {
                 table();
                 cout << "Tekan sembarang untuk kembali ke menu";
                 getch();
@@ -116,54 +119,62 @@ int jmlUang;
             case 4: {
                 exit(0);
             }
-            default:{
-                cout<<"Opsi pilihan tidak ada, Tekan sembarang untuk kembali ke menu ...";
+            default: {
+                cout << "Opsi pilihan tidak ada, Tekan sembarang untuk kembali ke menu ...";
                 break;
             }
         }
-     }
+    }
     return 0;
 }
-void table(){
+
+void table() {
     system("cls");
     cout << endl;
     showAll();
     cout << endl;
-    cout << "Jumlah uang : ";
+    cout << "Jumlah uang: ";
     manage.displayJml();
     cout << endl << endl;
-};
-
-void showAll(){
-    string line,line2,line3;
-        file2.open("catatan.txt"); //membuka file
-        file.open("duitIn.txt"); //membuka file
-         while (getline(file2, line2) && getline(file, line)) {
-            cout << line2 << " : " << line << endl;
-         }
-        file2.close();
-        file.close();
 }
 
-void addRecord(){
-    file.open("duitIn.txt",ios::app);
+void showAll() {
+    string line, line2, line3, line4;
+    file2.open("catatanIn.txt"); // membuka file
+    file.open("duitIn.txt"); // membuka file
+    while (getline(file2, line2) && getline(file, line)) {
+        cout << line2 << " : " << line << "\n";
+    }
+    file2.close();
+    file.close();
+    file4.open("catatanOut.txt");
+    file3.open("duitOut.txt");
+    while (getline(file3, line3) && getline(file4, line4)) {
+        cout << line4 << " : " << line3 << "\n";
+    }
+    file3.close();
+    file4.close();
+}
+
+void addRecord() {
+    file.open("duitIn.txt", ios::app);
     file << manage.deposito << endl;
     file.close();
-    file2.open("catatan.txt",ios::app);
+    file2.open("catatanIn.txt", ios::app);
     file2 << " + " << manage.catat << endl;
     file2.close();
     cout << "Data telah berhasil ditambahkan!\n";
     cout << endl << endl;
 }
 
-void withdraw(){
-        int total;
-        string line;
-        manage.with();
-            file3.open("duitOut.txt",ios::app); //membuka file
-                file3 << manage.withdraw << endl;
-        file3.close();
-            file2.open("catatan.txt",ios::app);
-                file2 << " - " << manage.catat << endl;
-        file2.close();
+void withdraw() {
+    int total;
+    string line;
+    manage.with();
+    file3.open("duitOut.txt", ios::app); // membuka file
+    file3 << manage.withdraw << endl;
+    file3.close();
+    file2.open("catatanOut.txt", ios::app);
+    file2 << " - " << manage.catat << endl;
+    file2.close();
 }
